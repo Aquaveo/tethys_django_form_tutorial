@@ -32,6 +32,10 @@ class MyParamFileSelector(param.Parameterized):
     multiple_files = param.MultiFileSelector(path='*', precedence=0.5)
 
 
+class MyParamMagnitude(param.Parameterized):
+    magnitude = param.Magnitude(default=0.9)
+
+
 @login_required()
 def home(request):
     """
@@ -64,7 +68,6 @@ def param_boolean(request):
     Controller for the app home page.
     """
 
-    data_int_list = ""
     data_boolean = ""
 
     my_param = MyParamBoolean()
@@ -80,6 +83,7 @@ def param_boolean(request):
     }
 
     return render(request, 'tethys_django_form_tutorial/boolean.html', context)
+
 
 @login_required()
 def date_selection(request):
@@ -198,3 +202,26 @@ def file_selector(request):
     }
 
     return render(request, 'tethys_django_form_tutorial/file_selector.html', context)
+
+
+@login_required()
+def magnitude(request):
+    """
+    Controller for the app home page.
+    """
+
+    data_magnitude = ""
+
+    my_param = MyParamMagnitude()
+
+    form = ParamForm(param_class=my_param)
+
+    if request.POST:
+        data_magnitude = request.POST.get('magnitude', '')
+
+    context = {
+        'form': form,
+        'data_magnitude': data_magnitude,
+    }
+
+    return render(request, 'tethys_django_form_tutorial/magnitude.html', context)

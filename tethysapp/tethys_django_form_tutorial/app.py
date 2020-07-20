@@ -30,6 +30,11 @@ class TethysDjangoFormTutorial(TethysAppBase):
                 controller='tethys_django_form_tutorial.controllers.home'
             ),
             UrlMap(
+                name='boolean',
+                url='boolean',
+                controller='tethys_django_form_tutorial.controllers.param_boolean'
+            ),
+            UrlMap(
                 name='date',
                 url='date',
                 controller='tethys_django_form_tutorial.controllers.date_selection'
@@ -53,6 +58,11 @@ class TethysDjangoFormTutorial(TethysAppBase):
                 name='file_selector',
                 url='file_selector',
                 controller='tethys_django_form_tutorial.controllers.file_selector'
+            ),
+            UrlMap(
+                name='magnitude',
+                url='magnitude',
+                controller='tethys_django_form_tutorial.controllers.magnitude'
             ),
         )
 
