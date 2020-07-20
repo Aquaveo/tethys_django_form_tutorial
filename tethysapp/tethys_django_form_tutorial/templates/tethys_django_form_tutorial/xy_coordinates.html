@@ -13,9 +13,6 @@
   <h1>Django Form with Param</h1>
   <form action="" method="POST">
       {% csrf_token %}
-      <p>Default Date: 01-01-2017</p>
-      <p>Range: 01-01-2017 to 02-01-2017</p>
-      <p>Param: param.Date(dt.datetime(2017, 1, 1), bounds=(dt.datetime(2017, 1, 1), dt.datetime(2017, 2, 1)))</p>
       {{ form }}
       <p></p>
       <input type="submit" class="btn btn-primary" value="Submit">
@@ -24,7 +21,7 @@
   <p></p>
   <h3>Submitted Data</h3>
   <ol>
-      <li>Date: {{ data_date }}</li>
+      <li>XY Coordinates: {{data_xy_coordinates}}</li>
   </ol>
 
 {% endblock %}
@@ -59,11 +56,11 @@
   <li class=""><a href="../boolean">Boolean</a></li>
   <li class=""><a href="../colorpicker">Color Picker</a></li>
   <li class=""><a href="../dataframe">DataFrame</a></li>
-  <li class="active"><a href="">Date</a></li>
+  <li class=""><a href="../date">Date</a></li>
   <li class=""><a href="../magnitude">Magnitude</a></li>
   <li class=""><a href="../multiple_files">Multiple Files</a></li>
   <li class=""><a href="../number">Number</a></li>
   <li class=""><a href="../select_string">Select String</a></li>
   <li class=""><a href="../string">String</a></li>
-  <li class=""><a href="../xy_coordinates">XY Coordinates</a></li>
+  <li class="active"><a href="">XY Coordinates</a></li>
 {% endblock %}

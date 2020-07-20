@@ -45,6 +45,11 @@ class TethysDjangoFormTutorial(TethysAppBase):
                 controller='tethys_django_form_tutorial.controllers.dataframe'
             ),
             UrlMap(
+                name='list',
+                url='list',
+                controller='tethys_django_form_tutorial.controllers.param_list'
+            ),
+            UrlMap(
                 name='colorpicker',
                 url='colorpicker',
                 controller='tethys_django_form_tutorial.controllers.colorpicker'
@@ -55,14 +60,29 @@ class TethysDjangoFormTutorial(TethysAppBase):
                 controller='tethys_django_form_tutorial.controllers.select_string'
             ),
             UrlMap(
-                name='file_selector',
-                url='file_selector',
-                controller='tethys_django_form_tutorial.controllers.file_selector'
+                name='string',
+                url='string',
+                controller='tethys_django_form_tutorial.controllers.param_string'
+            ),
+            UrlMap(
+                name='multiple_files',
+                url='multiple_files',
+                controller='tethys_django_form_tutorial.controllers.multiple_files'
             ),
             UrlMap(
                 name='magnitude',
                 url='magnitude',
                 controller='tethys_django_form_tutorial.controllers.magnitude'
+            ),
+            UrlMap(
+                name='number',
+                url='number',
+                controller='tethys_django_form_tutorial.controllers.number'
+            ),
+            UrlMap(
+                name='xy_coordinates',
+                url='xy_coordinates',
+                controller='tethys_django_form_tutorial.controllers.xy_coordinates'
             ),
         )
 

@@ -7,12 +7,25 @@ import datetime as dt
 import pandas as pd
 
 
+# Specify your param class
+class MyParamString(param.Parameterized):
+    param_string = param.String(default="hello world!", doc="Your String")
+
+
+class MyParamXYCoordinates(param.Parameterized):
+    xy_coordinates = param.XYCoordinates(default=(-111.65, 40.23))
+
+
 class MyParamDataFrame(param.Parameterized):
     dataframe = param.DataFrame(pd.util.testing.makeDataFrame().iloc[:3])
 
 
 class MyParamColor(param.Parameterized):
     color = param.Color(default='#FFFFFF')
+
+
+class MyParamList(param.Parameterized):
+    list = param.List(default=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 
 
 class MyParamSelectString(param.Parameterized):
@@ -34,6 +47,10 @@ class MyParamFileSelector(param.Parameterized):
 
 class MyParamMagnitude(param.Parameterized):
     magnitude = param.Magnitude(default=0.9)
+
+
+class MyParamNumber(param.Parameterized):
+    number = param.Number(49, bounds=(0, 100), doc="Any Number between 0 to 100")
 
 
 @login_required()
@@ -159,6 +176,29 @@ def colorpicker(request):
 
 
 @login_required()
+def param_list(request):
+    """
+    Controller for the app home page.
+    """
+
+    data_list = ""
+
+    my_param = MyParamList()
+
+    form = ParamForm(param_class=my_param)
+
+    if request.POST:
+        data_list = request.POST.getlist('list', '')
+
+    context = {
+        'form': form,
+        'data_list': data_list,
+    }
+
+    return render(request, 'tethys_django_form_tutorial/list.html', context)
+
+
+@login_required()
 def select_string(request):
     """
     Controller for the app home page.
@@ -182,7 +222,7 @@ def select_string(request):
 
 
 @login_required()
-def file_selector(request):
+def multiple_files(request):
     """
     Controller for the app home page.
     """
@@ -201,7 +241,7 @@ def file_selector(request):
         'data_multiple_files': data_multiple_files,
     }
 
-    return render(request, 'tethys_django_form_tutorial/file_selector.html', context)
+    return render(request, 'tethys_django_form_tutorial/multiple_files.html', context)
 
 
 @login_required()
@@ -225,3 +265,72 @@ def magnitude(request):
     }
 
     return render(request, 'tethys_django_form_tutorial/magnitude.html', context)
+
+
+@login_required()
+def number(request):
+    """
+    Controller for the app home page.
+    """
+
+    data_number = ""
+
+    my_param = MyParamNumber()
+
+    form = ParamForm(param_class=my_param)
+
+    if request.POST:
+        data_number = request.POST.get('number', '')
+
+    context = {
+        'form': form,
+        'data_number': data_number,
+    }
+
+    return render(request, 'tethys_django_form_tutorial/number.html', context)
+
+
+@login_required()
+def param_string(request):
+    """
+    Controller for the app home page.
+    """
+
+    data_string = ""
+
+    my_param = MyParamString()
+
+    form = ParamForm(param_class=my_param)
+
+    if request.POST:
+        data_string = request.POST.get('param_string', '')
+
+    context = {
+        'form': form,
+        'data_string': data_string,
+    }
+
+    return render(request, 'tethys_django_form_tutorial/string.html', context)
+
+
+@login_required()
+def xy_coordinates(request):
+    """
+    Controller for the app home page.
+    """
+
+    data_xy_coordinates = ""
+
+    my_param = MyParamXYCoordinates()
+
+    form = ParamForm(param_class=my_param)
+
+    if request.POST:
+        data_xy_coordinates = request.POST.get('xy_coordinates', '')
+
+    context = {
+        'form': form,
+        'data_xy_coordinates': data_xy_coordinates,
+    }
+
+    return render(request, 'tethys_django_form_tutorial/xy_coordinates.html', context)
