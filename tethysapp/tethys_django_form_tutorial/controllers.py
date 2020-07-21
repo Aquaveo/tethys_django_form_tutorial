@@ -10,11 +10,11 @@ import pandas as pd
 
 # Specify your param class
 class MyParamString(param.Parameterized):
-    param_string = param.String(default="hello world!", doc="Your String")
+    favorite_quote = param.String(default="hello world!", doc="Your String")
 
 
 class MyParamXYCoordinates(param.Parameterized):
-    xy_coordinates = param.XYCoordinates(default=(-111.65, 40.23))
+    home_town = param.XYCoordinates(default=(-111.65, 40.23))
 
 
 class MyParamDataFrame(param.Parameterized):
@@ -30,27 +30,27 @@ class MyParamList(param.Parameterized):
 
 
 class MyParamSelectString(param.Parameterized):
-    select_string = param.ObjectSelector(default="yellow", objects=["red", "yellow", "green"])
+    choose_color = param.ObjectSelector(default="yellow", objects=["red", "yellow", "green"])
 
 
 class MyParamDate(param.Parameterized):
-    date = param.Date(dt.datetime(2017, 1, 1), bounds=(dt.datetime(2017, 1, 1), dt.datetime(2017, 2, 1)))
+    birthday = param.Date(dt.datetime(2017, 1, 1), bounds=(dt.datetime(2017, 1, 1), dt.datetime(2017, 2, 1)))
 
 
 class MyParamBoolean(param.Parameterized):
-    boolean = param.Boolean(True, doc="A sample Boolean parameter")
+    enable_sprocket = param.Boolean(True, doc="A sample Boolean parameter")
 
 
 class MyParamFileSelector(param.Parameterized):
-    multiple_files = param.MultiFileSelector(path='*', precedence=0.5)
+    which_file = param.MultiFileSelector(path='*', precedence=0.5)
 
 
 class MyParamMagnitude(param.Parameterized):
-    magnitude = param.Magnitude(default=0.9)
+    r_squared = param.Magnitude(default=0.9)
 
 
 class MyParamNumber(param.Parameterized):
-    number = param.Number(49, bounds=(0, 100), doc="Any Number between 0 to 100")
+    age = param.Number(49, bounds=(0, 100), doc="Any Number between 0 to 100")
 
 
 @login_required()
@@ -338,18 +338,18 @@ def testing(request):
     Nathan's testing controller.
     """
     class MyParameterized(param.Parameterized):
-        boolean = param.Boolean(True, doc="A sample Boolean parameter")
-        color = param.Color(default='#FFFFFF')
-        dataframe = param.DataFrame(pd.util.testing.makeDataFrame().iloc[:3])
-        date = param.Date(dt.datetime(2017, 1, 1), bounds=(dt.datetime(2017, 1, 1), dt.datetime(2017, 2, 1)))
-        list = param.List(default=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+        enable = param.Boolean(True, doc="A sample Boolean parameter")
+        # color = param.Color(default='#FFFFFF')
+        # dataframe = param.DataFrame(pd.util.testing.makeDataFrame().iloc[:3])
+        # date = param.Date(dt.datetime(2017, 1, 1), bounds=(dt.datetime(2017, 1, 1), dt.datetime(2017, 2, 1)))
+        lucky_number = param.List(default=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
         # int_list = param.ListSelector(default=[3, 5], objects=[1, 3, 5, 7, 9], precedence=0.5)
-        magnitude = param.Magnitude(default=0.9)
-        multiple_files = param.MultiFileSelector(path='*', precedence=0.5)
-        number = param.Number(49, bounds=(0, 100), doc="Any Number between 0 to 100")
-        select_string = param.ObjectSelector(default="yellow", objects=["red", "yellow", "green"])
-        a_string = param.String(default="Hello, world!")
-        xy_coordinates = param.XYCoordinates(default=(-111.65, 40.23))
+        how_big = param.Magnitude(default=0.9)
+        choose_file = param.MultiFileSelector(path='*', precedence=0.5)
+        age = param.Number(49, bounds=(0, 100), doc="Any Number between 0 to 100")
+        favorite_color = param.ObjectSelector(default="yellow", objects=["red", "yellow", "green"])
+        favorite_quote = param.String(default="Hello, world!")
+        home_city = param.XYCoordinates(default=(-111.65, 40.23))
 
     my_param = MyParameterized()
 
