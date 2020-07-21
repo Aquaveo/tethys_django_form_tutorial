@@ -329,9 +329,9 @@ def testing(request):
     """
     class MyParameterized(param.Parameterized):
         boolean = param.Boolean(True, doc="A sample Boolean parameter")
-        # color = param.Color(default='#FFFFFF')
-        # dataframe = param.DataFrame(pd.util.testing.makeDataFrame().iloc[:3])
-        # date = param.Date(dt.datetime(2017, 1, 1), bounds=(dt.datetime(2017, 1, 1), dt.datetime(2017, 2, 1)))
+        color = param.Color(default='#FFFFFF')
+        dataframe = param.DataFrame(pd.util.testing.makeDataFrame().iloc[:3])
+        date = param.Date(dt.datetime(2017, 1, 1), bounds=(dt.datetime(2017, 1, 1), dt.datetime(2017, 2, 1)))
         list = param.List(default=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
         # int_list = param.ListSelector(default=[3, 5], objects=[1, 3, 5, 7, 9], precedence=0.5)
         magnitude = param.Magnitude(default=0.9)
