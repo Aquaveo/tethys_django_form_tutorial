@@ -318,3 +318,45 @@ def xy_coordinates(request):
     }
 
     return render(request, 'tethys_django_form_tutorial/xy_coordinates.html', context)
+
+
+@login_required()
+def testing(request):
+    """
+    Nathan's testing controller.
+    """
+    success = None
+    class MyParameterized(param.Parameterized):
+        boolean = param.Boolean(True, doc="A sample Boolean parameter")
+        # color = param.Color(default='#FFFFFF')
+        # dataframe = param.DataFrame(pd.util.testing.makeDataFrame().iloc[:3])
+        # date = param.Date(dt.datetime(2017, 1, 1), bounds=(dt.datetime(2017, 1, 1), dt.datetime(2017, 2, 1)))
+        list = param.List(default=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+        # int_list = param.ListSelector(default=[3, 5], objects=[1, 3, 5, 7, 9], precedence=0.5)
+        magnitude = param.Magnitude(default=0.9)
+        multiple_files = param.MultiFileSelector(path='*', precedence=0.5)
+        number = param.Number(49, bounds=(0, 100), doc="Any Number between 0 to 100")
+        select_string = param.ObjectSelector(default="yellow", objects=["red", "yellow", "green"])
+        a_string = param.String(default="Hello, world!")
+        xy_coordinates = param.XYCoordinates(default=(-111.65, 40.23))
+
+    my_param = MyParameterized()
+
+    if request.method == 'POST':
+        form = ParamForm(request.POST, param_class=my_param)
+        if form.is_valid():
+            message = 'Form is valid!'
+            success = True
+        else:
+            message = 'Form is not valid!'
+            success = False
+    else:
+        message = ''
+        form = ParamForm(param_class=my_param)
+
+    context = {
+        'form': form,
+        'message': message,
+        'success': success
+    }
+    return render(request, 'tethys_django_form_tutorial/testing.html', context)

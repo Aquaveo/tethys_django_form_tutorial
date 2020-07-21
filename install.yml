@@ -11,5 +11,5 @@ requirements:
     packages:
 
   pip:
-    django_param
+  - django_param
 post:
