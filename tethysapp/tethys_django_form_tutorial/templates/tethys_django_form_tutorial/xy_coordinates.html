@@ -13,6 +13,8 @@
   <h1>Django Form with Param</h1>
   <form action="" method="POST">
       {% csrf_token %}
+      <p><strong>xy_coordinates = param.XYCoordinates(default=(-111.65, 40.23))</strong></p>
+      <h3>Form Result:</h3>
       {{ form }}
       <p></p>
       <input type="submit" class="btn btn-primary" value="Submit">

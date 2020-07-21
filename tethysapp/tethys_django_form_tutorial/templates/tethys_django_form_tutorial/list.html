@@ -13,6 +13,8 @@
   <h1>Django Form with Param</h1>
   <form action="" method="POST">
       {% csrf_token %}
+      <p><strong>list = param.List(default=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10])</strong></p>
+      <h3>Form Result:</h3>
       {{ form }}
       <p></p>
       <input type="submit" class="btn btn-primary" value="Submit">
@@ -56,7 +58,7 @@
   <li class=""><a href="../boolean">Boolean</a></li>
   <li class=""><a href="../colorpicker">Color Picker</a></li>
   <li class=""><a href="../dataframe">DataFrame</a></li>
-  <li class=""><a href="../Date">Date</a></li>
+  <li class=""><a href="../date">Date</a></li>
   <li class="active"><a href="">List</a></li>
   <li class=""><a href="../magnitude">Magnitude</a></li>
   <li class=""><a href="../multiple_files">Multiple Files</a></li>

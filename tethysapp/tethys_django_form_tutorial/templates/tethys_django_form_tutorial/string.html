@@ -13,6 +13,8 @@
   <h1>Django Form with Param</h1>
   <form action="" method="POST">
       {% csrf_token %}
+      <p><strong>param_string = param.String(default="hello world!", doc="Your String")</strong></p>
+      <h3>Form Result:</h3>
       {{ form }}
       <p></p>
       <input type="submit" class="btn btn-primary" value="Submit">

@@ -13,9 +13,10 @@
   <h1>Django Form with Param</h1>
   <form action="" method="POST">
       {% csrf_token %}
-      <p>Default Date: 01-01-2017</p>
-      <p>Range: 01-01-2017 to 02-01-2017</p>
-      <p>Param: param.Date(dt.datetime(2017, 1, 1), bounds=(dt.datetime(2017, 1, 1), dt.datetime(2017, 2, 1)))</p>
+      <p><strong>Default Date: 01-01-2017</strong></p>
+      <p><strong>Range: 01-01-2017 to 02-01-2017</strong></p>
+      <p><strong>Param: date = param.Date(dt.datetime(2017, 1, 1), bounds=(dt.datetime(2017, 1, 1), dt.datetime(2017, 2, 1)))</strong></p>
+      <h3>Form Result:</h3>
       {{ form }}
       <p></p>
       <input type="submit" class="btn btn-primary" value="Submit">

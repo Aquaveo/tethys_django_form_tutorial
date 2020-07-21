@@ -38,7 +38,6 @@ class MyParamDate(param.Parameterized):
 
 class MyParamBoolean(param.Parameterized):
     boolean = param.Boolean(True, doc="A sample Boolean parameter")
-    # int_list = param.ListSelector(default=[3, 5], objects=[1, 3, 5, 7, 9], precedence=0.5)
 
 
 class MyParamFileSelector(param.Parameterized):
@@ -59,22 +58,7 @@ def home(request):
     Controller for the app home page.
     """
 
-    data_int_list = ""
-    data_boolean = ""
-
-    my_param = MyParamBoolean()
-
-    form = ParamForm(param_class=my_param)
-
-    if request.POST:
-        data_int_list = request.POST.get('int_list', '')
-        data_boolean = request.POST.get('boolean', '')
-
-    context = {
-        'form': form,
-        'data_int_list': data_int_list,
-        'data_boolean': data_boolean,
-    }
+    context = {}
 
     return render(request, 'tethys_django_form_tutorial/home.html', context)
 
@@ -89,7 +73,7 @@ def param_boolean(request):
 
     my_param = MyParamBoolean()
 
-    form = ParamForm(param_class=my_param)
+    form = ParamForm(param=my_param)
 
     if request.POST:
         data_boolean = request.POST.get('boolean', '')
@@ -112,7 +96,7 @@ def date_selection(request):
 
     my_param = MyParamDate()
 
-    form = ParamForm(param_class=my_param)
+    form = ParamForm(param=my_param)
 
     if request.POST:
         data_date = request.POST.get('date', '')
@@ -133,7 +117,7 @@ def dataframe(request):
 
     my_param = MyParamDataFrame()
 
-    form = ParamForm(param_class=my_param)
+    form = ParamForm(param=my_param)
     data_a, data_b, data_c, data_d = "", "", "", ""
     if request.POST:
         data_a = request.POST.getlist('A', '')
@@ -162,7 +146,7 @@ def colorpicker(request):
 
     my_param = MyParamColor()
 
-    form = ParamForm(param_class=my_param)
+    form = ParamForm(param=my_param)
 
     if request.POST:
         data_color = request.POST.get('color', '')
@@ -185,7 +169,7 @@ def param_list(request):
 
     my_param = MyParamList()
 
-    form = ParamForm(param_class=my_param)
+    form = ParamForm(param=my_param)
 
     if request.POST:
         data_list = request.POST.getlist('list', '')
@@ -208,7 +192,7 @@ def select_string(request):
 
     my_param = MyParamSelectString()
 
-    form = ParamForm(param_class=my_param)
+    form = ParamForm(param=my_param)
 
     if request.POST:
         data_select_string = request.POST.get('select_string', '')
@@ -231,7 +215,7 @@ def multiple_files(request):
 
     my_param = MyParamFileSelector()
 
-    form = ParamForm(param_class=my_param)
+    form = ParamForm(param=my_param)
 
     if request.POST:
         data_multiple_files = request.POST.getlist('multiple_files', '')
@@ -254,7 +238,7 @@ def magnitude(request):
 
     my_param = MyParamMagnitude()
 
-    form = ParamForm(param_class=my_param)
+    form = ParamForm(param=my_param)
 
     if request.POST:
         data_magnitude = request.POST.get('magnitude', '')
@@ -277,7 +261,7 @@ def number(request):
 
     my_param = MyParamNumber()
 
-    form = ParamForm(param_class=my_param)
+    form = ParamForm(param=my_param)
 
     if request.POST:
         data_number = request.POST.get('number', '')
@@ -300,7 +284,7 @@ def param_string(request):
 
     my_param = MyParamString()
 
-    form = ParamForm(param_class=my_param)
+    form = ParamForm(param=my_param)
 
     if request.POST:
         data_string = request.POST.get('param_string', '')
@@ -323,7 +307,7 @@ def xy_coordinates(request):
 
     my_param = MyParamXYCoordinates()
 
-    form = ParamForm(param_class=my_param)
+    form = ParamForm(param=my_param)
 
     if request.POST:
         data_xy_coordinates = request.POST.get('xy_coordinates', '')
