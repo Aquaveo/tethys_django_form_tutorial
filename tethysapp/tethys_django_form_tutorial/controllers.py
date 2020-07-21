@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views.decorators.csrf import ensure_csrf_cookie
 from tethys_sdk.permissions import login_required
 from tethys_sdk.gizmos import Button
 from django_param.forms import ParamForm
@@ -320,6 +321,7 @@ def xy_coordinates(request):
     return render(request, 'tethys_django_form_tutorial/xy_coordinates.html', context)
 
 
+@ensure_csrf_cookie
 @login_required()
 def testing(request):
     """
@@ -342,7 +344,7 @@ def testing(request):
     my_param = MyParameterized()
 
     if request.method == 'POST':
-        form = ParamForm(request.POST, param_class=my_param)
+        form = ParamForm(request.POST, param=my_param)
         if form.is_valid():
             message = 'Form is valid!'
             success = True
@@ -352,10 +354,10 @@ def testing(request):
             success = False
             the_param = my_param
     else:
-        message = ''
+        message = 'Please submit the form.'
         success = None
         the_param = my_param
-        form = ParamForm(param_class=my_param)
+        form = ParamForm(param=my_param)
 
     context = {
         'form': form,
