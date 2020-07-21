@@ -325,7 +325,6 @@ def testing(request):
     """
     Nathan's testing controller.
     """
-    success = None
     class MyParameterized(param.Parameterized):
         boolean = param.Boolean(True, doc="A sample Boolean parameter")
         # color = param.Color(default='#FFFFFF')
@@ -347,16 +346,21 @@ def testing(request):
         if form.is_valid():
             message = 'Form is valid!'
             success = True
+            the_param = form.as_param()
         else:
             message = 'Form is not valid!'
             success = False
+            the_param = my_param
     else:
         message = ''
+        success = None
+        the_param = my_param
         form = ParamForm(param_class=my_param)
 
     context = {
         'form': form,
         'message': message,
-        'success': success
+        'success': success,
+        'param': the_param
     }
     return render(request, 'tethys_django_form_tutorial/testing.html', context)

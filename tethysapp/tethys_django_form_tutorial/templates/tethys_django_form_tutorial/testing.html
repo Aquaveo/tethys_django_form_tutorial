@@ -12,8 +12,10 @@
   </form>
 
   <p></p>
-  <h3>Submitted Data</h3>
-  <ol>
-      <li>String: {{data_string}}</li>
-  </ol>
+  <h3>Param Values</h3>
+  <ul>
+      {% for p in param.get_param_values %}
+      <li>{{ p.0 }}: {{ p.1 }}</li>
+      {% endfor %}
+  </ul>
 {% endblock %}
