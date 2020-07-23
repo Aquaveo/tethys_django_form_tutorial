@@ -17,7 +17,7 @@ class MyParamXYCoordinates(param.Parameterized):
 
 
 class MyParamDataFrame(param.Parameterized):
-    dataframe = param.DataFrame(pd.util.testing.makeDataFrame().iloc[:3])
+    dataset = param.DataFrame(pd.util.testing.makeDataFrame().iloc[:3])
 
 
 class MyParamColor(param.Parameterized):
@@ -49,7 +49,7 @@ class MyParamMagnitude(param.Parameterized):
 
 
 class MyParamNumber(param.Parameterized):
-    number = param.Number(49, bounds=(0, 100), doc="Any Number between 0 to 100")
+    number = param.Number(49, doc="Any Number between 0 to 100")
 
 
 @login_required()
@@ -239,8 +239,12 @@ def magnitude(request):
     my_param = MyParamMagnitude()
 
     form = ParamForm(param=my_param)
-
+    avoid_key = 'csrfmiddlewaretoken'
     if request.POST:
+        post_data = {k: request.POST[k] for k in set(list(request.POST.keys()))}
+        post_data.pop(avoid_key, None)
+        new_form = ParamForm(post_data, param=my_param)
+        breakpoint()
         data_magnitude = request.POST.get('magnitude', '')
 
     context = {
@@ -283,8 +287,18 @@ def param_string(request):
     data_string = ""
 
     my_param = MyParamString()
+    from django import forms
+    from django.forms.widgets import Textarea
 
-    form = ParamForm(param=my_param)
+    widget_map = {
+        param.parameterized.String:
+            lambda po, p, name: forms.CharField(
+                initial=po.inspect_value(name) or p.default,
+                widget=Textarea,
+            ),
+    }
+
+    form = ParamForm(param=my_param, widget_map=widget_map)
 
     if request.POST:
         data_string = request.POST.get('param_string', '')

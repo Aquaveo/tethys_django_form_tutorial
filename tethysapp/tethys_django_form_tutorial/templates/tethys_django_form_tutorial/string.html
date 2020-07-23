@@ -14,6 +14,15 @@
   <form action="" method="POST">
       {% csrf_token %}
       <p><strong>param_string = param.String(default="hello world!", doc="Your String")</strong></p>
+      <p>Override widget_map with custom_widget:</p>
+      <p>widget_map = {
+            param.parameterized.String:
+                lambda po, p, name: forms.CharField(
+                    initial=po.inspect_value(name) or p.default,
+                    widget=Textarea,
+                ),
+            }</p>
+      <p>form = ParamForm(param=my_param, widget_map=widget_map)</p>
       <h3>Form Result:</h3>
       {{ form }}
       <p></p>
