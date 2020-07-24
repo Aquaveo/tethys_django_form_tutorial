@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views.decorators.csrf import ensure_csrf_cookie
 from tethys_sdk.permissions import login_required
 from tethys_sdk.gizmos import Button
 from django_param.forms import ParamForm
@@ -49,7 +50,7 @@ class MyParamMagnitude(param.Parameterized):
 
 
 class MyParamNumber(param.Parameterized):
-    number = param.Number(49, doc="Any Number between 0 to 100")
+    number = param.Number(49, bounds=(0, 100), doc="Any Number between 0 to 100")
 
 
 @login_required()
@@ -239,12 +240,8 @@ def magnitude(request):
     my_param = MyParamMagnitude()
 
     form = ParamForm(param=my_param)
-    avoid_key = 'csrfmiddlewaretoken'
+
     if request.POST:
-        post_data = {k: request.POST[k] for k in set(list(request.POST.keys()))}
-        post_data.pop(avoid_key, None)
-        new_form = ParamForm(post_data, param=my_param)
-        breakpoint()
         data_magnitude = request.POST.get('magnitude', '')
 
     context = {
@@ -332,3 +329,50 @@ def xy_coordinates(request):
     }
 
     return render(request, 'tethys_django_form_tutorial/xy_coordinates.html', context)
+
+
+@ensure_csrf_cookie
+@login_required()
+def testing(request):
+    """
+    Nathan's testing controller.
+    """
+    class MyParameterized(param.Parameterized):
+        boolean = param.Boolean(True, doc="A sample Boolean parameter")
+        color = param.Color(default='#FFFFFF')
+        dataframe = param.DataFrame(pd.util.testing.makeDataFrame().iloc[:3])
+        date = param.Date(dt.datetime(2017, 1, 1), bounds=(dt.datetime(2017, 1, 1), dt.datetime(2017, 2, 1)))
+        list = param.List(default=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+        # int_list = param.ListSelector(default=[3, 5], objects=[1, 3, 5, 7, 9], precedence=0.5)
+        magnitude = param.Magnitude(default=0.9)
+        multiple_files = param.MultiFileSelector(path='*', precedence=0.5)
+        number = param.Number(49, bounds=(0, 100), doc="Any Number between 0 to 100")
+        select_string = param.ObjectSelector(default="yellow", objects=["red", "yellow", "green"])
+        a_string = param.String(default="Hello, world!")
+        xy_coordinates = param.XYCoordinates(default=(-111.65, 40.23))
+
+    my_param = MyParameterized()
+
+    if request.method == 'POST':
+        form = ParamForm(request.POST, param=my_param)
+        if form.is_valid():
+            message = 'Form is valid!'
+            success = True
+            the_param = form.as_param()
+        else:
+            message = 'Form is not valid!'
+            success = False
+            the_param = my_param
+    else:
+        message = 'Please submit the form.'
+        success = None
+        the_param = my_param
+        form = ParamForm(param=my_param)
+
+    context = {
+        'form': form,
+        'message': message,
+        'success': success,
+        'param': the_param
+    }
+    return render(request, 'tethys_django_form_tutorial/testing.html', context)
