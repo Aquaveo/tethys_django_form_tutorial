@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.views.decorators.csrf import ensure_csrf_cookie
 from tethys_sdk.permissions import login_required
 from tethys_sdk.gizmos import Button
 from django_param.forms import ParamForm
@@ -18,7 +17,7 @@ class MyParamXYCoordinates(param.Parameterized):
 
 
 class MyParamDataFrame(param.Parameterized):
-    dataframe = param.DataFrame(pd.util.testing.makeDataFrame().iloc[:3])
+    dataset = param.DataFrame(pd.util.testing.makeDataFrame().iloc[:3])
 
 
 class MyParamColor(param.Parameterized):
@@ -284,8 +283,18 @@ def param_string(request):
     data_string = ""
 
     my_param = MyParamString()
+    from django import forms
+    from django.forms.widgets import Textarea
 
-    form = ParamForm(param=my_param)
+    widget_map = {
+        param.parameterized.String:
+            lambda po, p, name: forms.CharField(
+                initial=po.inspect_value(name) or p.default,
+                widget=Textarea,
+            ),
+    }
+
+    form = ParamForm(param=my_param, widget_map=widget_map)
 
     if request.POST:
         data_string = request.POST.get('param_string', '')
