@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie
 from tethys_sdk.permissions import login_required
-from tethys_sdk.gizmos import Button
 from django_param.forms import ParamForm
+from django.views.decorators.csrf import ensure_csrf_cookie
 import param
 import datetime as dt
 import pandas as pd
+import os
 
 
 # Specify your param class
@@ -26,7 +27,8 @@ class MyParamColor(param.Parameterized):
 
 
 class MyParamList(param.Parameterized):
-    list = param.List(default=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+    # list = param.List(default=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+    list = param.ListSelector(objects=["red", "yellow", "green", "blue"])
 
 
 class MyParamSelectString(param.Parameterized):
@@ -34,7 +36,9 @@ class MyParamSelectString(param.Parameterized):
 
 
 class MyParamDate(param.Parameterized):
-    birthday = param.Date(dt.datetime(2017, 1, 1), bounds=(dt.datetime(2017, 1, 1), dt.datetime(2017, 2, 1)))
+    datetime = param.Date(dt.datetime(2020, 1, 1, 0, 0, 0), bounds=(dt.datetime(2017, 1, 1, 0, 0, 0),
+                                                                    dt.datetime(2021, 1, 1, 0, 0, 0)))
+    date = param.CalendarDate(dt.date(2020, 1, 1))
 
 
 class MyParamBoolean(param.Parameterized):
@@ -94,17 +98,18 @@ def date_selection(request):
     """
 
     data_date = ""
-
+    data_datetime= ""
     my_param = MyParamDate()
 
     form = ParamForm(param=my_param)
 
     if request.POST:
+        data_datetime = request.POST.get('datetime', '')
         data_date = request.POST.get('date', '')
-
     context = {
         'form': form,
         'data_date': data_date,
+        'data_datetime': data_datetime,
     }
 
     return render(request, 'tethys_django_form_tutorial/Date.html', context)
@@ -337,6 +342,8 @@ def testing(request):
     """
     Nathan's testing controller.
     """
+    current_path = os.getcwd()
+
     class MyParameterized(param.Parameterized):
         enable = param.Boolean(True, doc="A sample Boolean parameter")
         # color = param.Color(default='#FFFFFF')
@@ -363,6 +370,7 @@ def testing(request):
 
     if request.method == 'POST':
         form = ParamForm(request.POST, param=my_param)
+        breakpoint()
         if form.is_valid():
             message = 'Form is valid!'
             success = True
