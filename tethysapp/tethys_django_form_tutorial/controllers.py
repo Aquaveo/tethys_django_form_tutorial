@@ -338,7 +338,7 @@ def xy_coordinates(request):
 
 @ensure_csrf_cookie
 @login_required()
-def testing(request):
+def all(request):
     """
     Nathan's testing controller.
     """
