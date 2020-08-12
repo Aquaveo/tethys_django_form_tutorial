@@ -87,7 +87,7 @@ class TethysDjangoFormTutorial(TethysAppBase):
             UrlMap(
                 name='all',
                 url='all',
-                controller='tethys_django_form_tutorial.controllers.all'
+                controller='tethys_django_form_tutorial.controllers.all_supported'
             ),
         )
 

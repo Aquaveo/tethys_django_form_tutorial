@@ -338,7 +338,7 @@ def xy_coordinates(request):
 
 @ensure_csrf_cookie
 @login_required()
-def all(request):
+def all_supported(request):
     """
     Nathan's testing controller.
     """
@@ -362,12 +362,12 @@ def all(request):
         birthday = param.CalendarDate(dt.date(2017, 1, 1), bounds=(dt.date(2017, 1, 1), dt.date(2017, 2, 1)))
         appointment = param.Date(dt.datetime(2017, 1, 1), bounds=(dt.datetime(2017, 1, 1), dt.datetime(2017, 2, 1)))
         least_favorite_color = param.Color(default='#FF0000')
-        # dataset = param.DataFrame(pd.util.testing.makeDataFrame().iloc[:3])
+        dataset = param.DataFrame(pd.util.testing.makeDataFrame().iloc[:3])
 
-        # home_city = param.XYCoordinates(default=(-111.65, 40.23))
-
-        # key_value = param.Dict()
-        # lucky_number = param.List(default=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+        this_strange_thing = param.Tuple(default=(1, 2.0, '3', 'Hello', False))
+        some_numbers = param.NumericTuple(default=(1, 2, 3.0, 4.0))
+        home_city = param.XYCoordinates(default=(-111.65, 40.23))
+        bounds = param.Range(default=(-10, 10))
 
     my_param = MyParameterized()
 
