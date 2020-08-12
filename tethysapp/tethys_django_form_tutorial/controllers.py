@@ -342,35 +342,37 @@ def testing(request):
     """
     Nathan's testing controller.
     """
-    current_path = os.getcwd()
-
     class MyParameterized(param.Parameterized):
         enable = param.Boolean(True, doc="A sample Boolean parameter")
-        # color = param.Color(default='#FFFFFF')
-        # dataframe = param.DataFrame(pd.util.testing.makeDataFrame().iloc[:3])
-        # birthday = param.Date(dt.datetime(2017, 1, 1), bounds=(dt.datetime(2017, 1, 1), dt.datetime(2017, 2, 1)))
-        # lucky_number = param.List(default=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-        # int_list = param.ListSelector(default=[3, 5], objects=[1, 3, 5, 7, 9], precedence=0.5)
-        how_big = param.Magnitude(default=0.9)
-        choose_multiple_files = param.MultiFileSelector(path='/home/nswain/*.log')
-        choose_one_file = param.FileSelector(path='/home/nswain/*.log')
-        random_path = param.Path(search_paths='/home/nswain')
-        choose_folder = param.Foldername(search_paths="/home/nswain")
-        choose_file = param.Filename(search_paths="/home/nswain")
+        what_proportion = param.Magnitude(default=0.9)
         age = param.Number(49, bounds=(0, 100), doc="Any Number between 0 to 100")
-        favorite_color = param.ObjectSelector(default="red", objects=["red", "yellow", "green"])
-        favorite_fruit = param.Selector(objects=["Orange", "Apple", "Mango"])
-        favorite_quote = param.String(default="Hello, world!")
-        home_city = param.XYCoordinates(default=(-111.65, 40.23))
-        # key_value = param.Dict()
         how_many = param.Integer()
-        select_multiple = param.ListSelector(default=[1, 3, 5], objects=[1, 2, 3, 4, 5])
+        favorite_quote = param.String(default="Hello, world!")
+
+        choose_file_or_folder = param.Path(search_paths='./')
+        choose_folder = param.Foldername(search_paths="./")
+        choose_file = param.Filename(search_paths="./")
+        select_a_file = param.FileSelector(path='./*')
+        select_multiple_files = param.MultiFileSelector(path='./*')
+
+        favorite_color = param.ObjectSelector(default="green", objects=["red", "yellow", "green"])
+        favorite_fruit = param.Selector(default="Apple", objects=["Orange", "Apple", "Mango"])
+        select_multiple = param.ListSelector(default=[3, 5], objects=[1, 2, 3, 4, 5])
+
+        birthday = param.CalendarDate(dt.date(2017, 1, 1), bounds=(dt.date(2017, 1, 1), dt.date(2017, 2, 1)))
+        appointment = param.Date(dt.datetime(2017, 1, 1), bounds=(dt.datetime(2017, 1, 1), dt.datetime(2017, 2, 1)))
+        least_favorite_color = param.Color(default='#FF0000')
+        # dataset = param.DataFrame(pd.util.testing.makeDataFrame().iloc[:3])
+
+        # home_city = param.XYCoordinates(default=(-111.65, 40.23))
+
+        # key_value = param.Dict()
+        # lucky_number = param.List(default=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 
     my_param = MyParameterized()
 
     if request.method == 'POST':
         form = ParamForm(request.POST, param=my_param)
-        breakpoint()
         if form.is_valid():
             message = 'Form is valid!'
             success = True
