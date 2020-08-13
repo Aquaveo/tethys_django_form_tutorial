@@ -84,6 +84,11 @@ class TethysDjangoFormTutorial(TethysAppBase):
                 url='xy_coordinates',
                 controller='tethys_django_form_tutorial.controllers.xy_coordinates'
             ),
+            UrlMap(
+                name='all',
+                url='all',
+                controller='tethys_django_form_tutorial.controllers.all_supported'
+            ),
         )
 
         return url_maps
