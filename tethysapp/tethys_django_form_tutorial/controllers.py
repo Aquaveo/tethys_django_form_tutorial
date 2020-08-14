@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views.decorators.csrf import ensure_csrf_cookie
 from tethys_sdk.permissions import login_required
 from django_param.forms import ParamForm
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -10,11 +11,11 @@ import os
 
 # Specify your param class
 class MyParamString(param.Parameterized):
-    param_string = param.String(default="hello world!", doc="Your String")
+    favorite_quote = param.String(default="hello world!", doc="Your String")
 
 
 class MyParamXYCoordinates(param.Parameterized):
-    xy_coordinates = param.Tuple(default=("test", False))
+    home_town = param.XYCoordinates(default=(-111.65, 40.23))
 
 
 class MyParamDataFrame(param.Parameterized):
@@ -31,7 +32,7 @@ class MyParamList(param.Parameterized):
 
 
 class MyParamSelectString(param.Parameterized):
-    select_string = param.ObjectSelector(default="yellow", objects=["red", "yellow", "green"])
+    choose_color = param.ObjectSelector(default="yellow", objects=["red", "yellow", "green"])
 
 
 class MyParamDate(param.Parameterized):
@@ -41,19 +42,19 @@ class MyParamDate(param.Parameterized):
 
 
 class MyParamBoolean(param.Parameterized):
-    boolean = param.Boolean(True, doc="A sample Boolean parameter")
+    enable_sprocket = param.Boolean(True, doc="A sample Boolean parameter")
 
 
 class MyParamFileSelector(param.Parameterized):
-    multiple_files = param.MultiFileSelector(path='*', precedence=0.5)
+    which_file = param.MultiFileSelector(path='*', precedence=0.5)
 
 
 class MyParamMagnitude(param.Parameterized):
-    magnitude = param.Magnitude(default=0.9)
+    r_squared = param.Magnitude(default=0.9)
 
 
 class MyParamNumber(param.Parameterized):
-    number = param.Number(49, bounds=(0, 100), doc="Any Number between 0 to 100")
+    age = param.Number(49, bounds=(0, 100), doc="Any Number between 0 to 100")
 
 
 @login_required()
@@ -337,36 +338,41 @@ def xy_coordinates(request):
 
 @ensure_csrf_cookie
 @login_required()
-def testing(request):
+def all_supported(request):
     """
     Nathan's testing controller.
     """
-    current_path = os.getcwd()
-
     class MyParameterized(param.Parameterized):
-        # boolean = param.Boolean(True, doc="A sample Boolean parameter")
-        # color = param.Color(default='#FFFFFF')
-        # dataframe = param.DataFrame(pd.util.testing.makeDataFrame().iloc[:3])
-        # date = param.Date(dt.datetime(2017, 1, 1), bounds=(dt.datetime(2017, 1, 1), dt.datetime(2017, 2, 1)))
-        # list = param.List(default=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-        # int_list = param.ListSelector(default=[3, 5], objects=[1, 3, 5, 7, 9], precedence=0.5)
-        # magnitude = param.Magnitude(default=0.9)
-        # multiple_files = param.MultiFileSelector(path='*', precedence=0.5)
-        # file_path = param.Path(search_paths=current_path)
-        # folder_path = param.Foldername(search_paths=current_path)
-        # number = param.Number(49, bounds=(0, 100), doc="Any Number between 0 to 100")
-        # list_selector = param.ListSelector(default=[3, 5], objects=[1, 3, 5, 7, 9])
-        # selector = param.Selector(default="red", objects=["red", "yellow", "green"])
-        # select_string = param.ObjectSelector(default="yellow", objects=["red", "yellow", "green"])
-        # a_string = param.String(default="Hello, world!")
-        xy_coordinates = param.XYCoordinates(default=(-111.65, 40))
-        ranges = param.Range(default=(-50, 50))
+        enable = param.Boolean(True, doc="A sample Boolean parameter")
+        what_proportion = param.Magnitude(default=0.9)
+        age = param.Number(49, bounds=(0, 100), doc="Any Number between 0 to 100")
+        how_many = param.Integer()
+        favorite_quote = param.String(default="Hello, world!")
+
+        choose_file_or_folder = param.Path(search_paths='./')
+        choose_folder = param.Foldername(search_paths="./")
+        choose_file = param.Filename(search_paths="./")
+        select_a_file = param.FileSelector(path='./*')
+        select_multiple_files = param.MultiFileSelector(path='./*')
+
+        favorite_color = param.ObjectSelector(default="green", objects=["red", "yellow", "green"])
+        favorite_fruit = param.Selector(default="Apple", objects=["Orange", "Apple", "Mango"])
+        select_multiple = param.ListSelector(default=[3, 5], objects=[1, 2, 3, 4, 5])
+
+        birthday = param.CalendarDate(dt.date(2017, 1, 1), bounds=(dt.date(2017, 1, 1), dt.date(2017, 2, 1)))
+        appointment = param.Date(dt.datetime(2017, 1, 1), bounds=(dt.datetime(2017, 1, 1), dt.datetime(2017, 2, 1)))
+        least_favorite_color = param.Color(default='#FF0000')
+        dataset = param.DataFrame(pd.util.testing.makeDataFrame().iloc[:3])
+
+        this_strange_thing = param.Tuple(default=(1, 2.0, '3', 'Hello', False))
+        some_numbers = param.NumericTuple(default=(1, 2, 3.0, 4.0))
+        home_city = param.XYCoordinates(default=(-111.65, 40.23))
+        bounds = param.Range(default=(-10, 10))
 
     my_param = MyParameterized()
 
     if request.method == 'POST':
         form = ParamForm(request.POST, param=my_param)
-        breakpoint()
         if form.is_valid():
             message = 'Form is valid!'
             success = True
