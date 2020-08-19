@@ -11,21 +11,21 @@
 
 {% block app_content %}
   <h1>Django Form with Param</h1>
+{% if message %}<p style="color: {% if success %}green{% else %}red{% endif %};"><strong>{{ message }}</strong></p>{% endif %}
   <form action="" method="POST">
       {% csrf_token %}
-      <p><strong>multiple_files = param.MultiFileSelector(path='*', precedence=0.5)</strong></p>
-      <h3>Form Result:</h3>
       {{ form }}
       <p></p>
       <input type="submit" class="btn btn-primary" value="Submit">
   </form>
 
   <p></p>
-  <h3>Submitted Data</h3>
-  <ol>
-      <li>Selected Files: {{data_multiple_files}}</li>
-  </ol>
-
+  <h3>Param Values</h3>
+  <ul>
+      {% for p in param.get_param_values %}
+      <li>{{ p.0 }}: {{ p.1 }}</li>
+      {% endfor %}
+  </ul>
 {% endblock %}
 
 {# Use the after_app_content block for modals #}

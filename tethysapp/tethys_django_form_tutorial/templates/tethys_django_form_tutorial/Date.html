@@ -11,24 +11,21 @@
 
 {% block app_content %}
   <h1>Django Form with Param</h1>
+{% if message %}<p style="color: {% if success %}green{% else %}red{% endif %};"><strong>{{ message }}</strong></p>{% endif %}
   <form action="" method="POST">
       {% csrf_token %}
-      <p><strong>Default Date: 01-01-2017</strong></p>
-      <p><strong>Range: 01-01-2017 to 02-01-2017</strong></p>
-      <p><strong>Param: date = param.Date(dt.datetime(2017, 1, 1), bounds=(dt.datetime(2017, 1, 1), dt.datetime(2017, 2, 1)))</strong></p>
-      <h3>Form Result:</h3>
       {{ form }}
       <p></p>
       <input type="submit" class="btn btn-primary" value="Submit">
   </form>
 
   <p></p>
-  <h3>Submitted Data</h3>
-  <ol>
-      <li>Date: {{ data_date }}</li>
-      <li>Datetime: {{ data_datetime }}</li>
-  </ol>
-
+  <h3>Param Values</h3>
+  <ul>
+      {% for p in param.get_param_values %}
+      <li>{{ p.0 }}: {{ p.1 }}</li>
+      {% endfor %}
+  </ul>
 {% endblock %}
 
 {# Use the after_app_content block for modals #}

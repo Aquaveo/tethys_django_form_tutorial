@@ -11,11 +11,12 @@ import os
 
 # Specify your param class
 class MyParamString(param.Parameterized):
-    favorite_quote = param.String(default="hello world!", doc="Your String")
+    favorite_quote = param.String(default="hello world!", doc="Empty String is not allowed", allow_None=False)
 
 
 class MyParamXYCoordinates(param.Parameterized):
     home_town = param.XYCoordinates(default=(-111.65, 40.23))
+    my_numeric_tuples = param.NumericTuple(default=(1, 2, 3))
 
 
 class MyParamDataFrame(param.Parameterized):
@@ -27,12 +28,9 @@ class MyParamColor(param.Parameterized):
 
 
 class MyParamList(param.Parameterized):
-    # list = param.List(default=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-    list = param.ListSelector(objects=["red", "yellow", "green", "blue"])
-
-
-class MyParamSelectString(param.Parameterized):
+    selector = param.Selector(objects=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
     choose_color = param.ObjectSelector(default="yellow", objects=["red", "yellow", "green"])
+    choose_multiple_color = param.ListSelector(default=['red', 'yellow'], objects=["red", "yellow", "green", "blue"])
 
 
 class MyParamDate(param.Parameterized):
@@ -42,7 +40,7 @@ class MyParamDate(param.Parameterized):
 
 
 class MyParamBoolean(param.Parameterized):
-    enable_sprocket = param.Boolean(True, doc="A sample Boolean parameter")
+    enable_sprocket = param.Boolean(True, doc="A sample Boolean parameter", allow_None=True)
 
 
 class MyParamFileSelector(param.Parameterized):
@@ -74,19 +72,9 @@ def param_boolean(request):
     Controller for the app home page.
     """
 
-    data_boolean = ""
-
     my_param = MyParamBoolean()
 
-    form = ParamForm(param=my_param)
-
-    if request.POST:
-        data_boolean = request.POST.get('boolean', '')
-
-    context = {
-        'form': form,
-        'data_boolean': data_boolean,
-    }
+    context = get_context(request, my_param)
 
     return render(request, 'tethys_django_form_tutorial/boolean.html', context)
 
@@ -96,21 +84,9 @@ def date_selection(request):
     """
     Controller for the app home page.
     """
-
-    data_date = ""
-    data_datetime= ""
     my_param = MyParamDate()
 
-    form = ParamForm(param=my_param)
-
-    if request.POST:
-        data_datetime = request.POST.get('datetime', '')
-        data_date = request.POST.get('date', '')
-    context = {
-        'form': form,
-        'data_date': data_date,
-        'data_datetime': data_datetime,
-    }
+    context = get_context(request, my_param)
 
     return render(request, 'tethys_django_form_tutorial/Date.html', context)
 
@@ -123,21 +99,7 @@ def dataframe(request):
 
     my_param = MyParamDataFrame()
 
-    form = ParamForm(param=my_param)
-    data_a, data_b, data_c, data_d = "", "", "", ""
-    if request.POST:
-        data_a = request.POST.getlist('A', '')
-        data_b = request.POST.getlist('B', '')
-        data_c = request.POST.getlist('C', '')
-        data_d = request.POST.getlist('D', '')
-
-    context = {
-        'form': form,
-        'data_a': data_a,
-        'data_b': data_b,
-        'data_c': data_c,
-        'data_d': data_d,
-    }
+    context = get_context(request, my_param)
 
     return render(request, 'tethys_django_form_tutorial/dataframe.html', context)
 
@@ -148,19 +110,9 @@ def colorpicker(request):
     Controller for the app home page.
     """
 
-    data_color = ""
-
     my_param = MyParamColor()
 
-    form = ParamForm(param=my_param)
-
-    if request.POST:
-        data_color = request.POST.get('color', '')
-
-    context = {
-        'form': form,
-        'data_color': data_color,
-    }
+    context = get_context(request, my_param)
 
     return render(request, 'tethys_django_form_tutorial/colorpicker.html', context)
 
@@ -171,19 +123,9 @@ def param_list(request):
     Controller for the app home page.
     """
 
-    data_list = ""
-
     my_param = MyParamList()
 
-    form = ParamForm(param=my_param)
-
-    if request.POST:
-        data_list = request.POST.getlist('list', '')
-
-    context = {
-        'form': form,
-        'data_list': data_list,
-    }
+    context = get_context(request, my_param)
 
     return render(request, 'tethys_django_form_tutorial/list.html', context)
 
@@ -194,19 +136,9 @@ def select_string(request):
     Controller for the app home page.
     """
 
-    data_select_string = ""
+    my_param = MyParamFileSelector()
 
-    my_param = MyParamSelectString()
-
-    form = ParamForm(param=my_param)
-
-    if request.POST:
-        data_select_string = request.POST.get('select_string', '')
-
-    context = {
-        'form': form,
-        'data_select_string': data_select_string,
-    }
+    context = get_context(request, my_param)
 
     return render(request, 'tethys_django_form_tutorial/select_string.html', context)
 
@@ -217,19 +149,9 @@ def multiple_files(request):
     Controller for the app home page.
     """
 
-    data_multiple_files = []
-
     my_param = MyParamFileSelector()
 
-    form = ParamForm(param=my_param)
-
-    if request.POST:
-        data_multiple_files = request.POST.getlist('multiple_files', '')
-
-    context = {
-        'form': form,
-        'data_multiple_files': data_multiple_files,
-    }
+    context = get_context(request, my_param)
 
     return render(request, 'tethys_django_form_tutorial/multiple_files.html', context)
 
@@ -240,19 +162,9 @@ def magnitude(request):
     Controller for the app home page.
     """
 
-    data_magnitude = ""
-
     my_param = MyParamMagnitude()
 
-    form = ParamForm(param=my_param)
-
-    if request.POST:
-        data_magnitude = request.POST.get('magnitude', '')
-
-    context = {
-        'form': form,
-        'data_magnitude': data_magnitude,
-    }
+    context = get_context(request, my_param)
 
     return render(request, 'tethys_django_form_tutorial/magnitude.html', context)
 
@@ -263,20 +175,9 @@ def number(request):
     Controller for the app home page.
     """
 
-    data_number = ""
-
     my_param = MyParamNumber()
 
-    form = ParamForm(param=my_param)
-
-    if request.POST:
-        data_number = request.POST.get('number', '')
-
-    context = {
-        'form': form,
-        'data_number': data_number,
-    }
-
+    context = get_context(request, my_param)
     return render(request, 'tethys_django_form_tutorial/number.html', context)
 
 
@@ -288,7 +189,6 @@ def param_string(request):
 
     data_string = ""
 
-    my_param = MyParamString()
     from django import forms
     from django.forms.widgets import Textarea
 
@@ -300,15 +200,9 @@ def param_string(request):
             ),
     }
 
-    form = ParamForm(param=my_param, widget_map=widget_map)
+    my_param = MyParamString()
 
-    if request.POST:
-        data_string = request.POST.get('param_string', '')
-
-    context = {
-        'form': form,
-        'data_string': data_string,
-    }
+    context = get_context(request, my_param)
 
     return render(request, 'tethys_django_form_tutorial/string.html', context)
 
@@ -318,20 +212,9 @@ def xy_coordinates(request):
     """
     Controller for the app home page.
     """
-
-    data_xy_coordinates = ""
-
     my_param = MyParamXYCoordinates()
 
-    form = ParamForm(param=my_param)
-
-    if request.POST:
-        data_xy_coordinates = request.POST.get('xy_coordinates', '')
-
-    context = {
-        'form': form,
-        'data_xy_coordinates': data_xy_coordinates,
-    }
+    context = get_context(request, my_param)
 
     return render(request, 'tethys_django_form_tutorial/xy_coordinates.html', context)
 
@@ -343,7 +226,7 @@ def all_supported(request):
     Nathan's testing controller.
     """
     class MyParameterized(param.Parameterized):
-        enable = param.Boolean(True, doc="A sample Boolean parameter")
+        enable = param.Boolean(True, doc="A sample Boolean parameter", allow_None=True)
         what_proportion = param.Magnitude(default=0.9)
         age = param.Number(49, bounds=(0, 100), doc="Any Number between 0 to 100")
         how_many = param.Integer()
@@ -364,13 +247,18 @@ def all_supported(request):
         least_favorite_color = param.Color(default='#FF0000')
         dataset = param.DataFrame(pd.util.testing.makeDataFrame().iloc[:3])
 
-        this_strange_thing = param.Tuple(default=(1, 2.0, '3', 'Hello', False))
+        this_strange_thing = param.Tuple(default=(False,), allow_None=True)
         some_numbers = param.NumericTuple(default=(1, 2, 3.0, 4.0))
         home_city = param.XYCoordinates(default=(-111.65, 40.23))
         bounds = param.Range(default=(-10, 10))
 
     my_param = MyParameterized()
+    context = get_context(request, my_param)
 
+    return render(request, 'tethys_django_form_tutorial/testing.html', context)
+
+
+def get_context(request, my_param):
     if request.method == 'POST':
         form = ParamForm(request.POST, param=my_param)
         if form.is_valid():
@@ -393,4 +281,4 @@ def all_supported(request):
         'success': success,
         'param': the_param
     }
-    return render(request, 'tethys_django_form_tutorial/testing.html', context)
+    return context

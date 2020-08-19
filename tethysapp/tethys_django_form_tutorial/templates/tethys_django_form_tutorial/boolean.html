@@ -11,19 +11,19 @@
 
 {% block app_content %}
   <h1>Django Form with Param</h1>
+{% if message %}<p style="color: {% if success %}green{% else %}red{% endif %};"><strong>{{ message }}</strong></p>{% endif %}
   <form action="" method="POST">
       {% csrf_token %}
-      <p><strong>param_string = param.String(default="hello world!", doc="Your String")</strong></p>
-      <h3>Form Result:</h3>
       {{ form }}
       <p></p>
       <input type="submit" class="btn btn-primary" value="Submit">
   </form>
 
   <p></p>
-  <h3>Submitted Data</h3>
-  <ol>
-      <li>Boolean: {{data_boolean}}</li>
-  </ol>
-
+  <h3>Param Values</h3>
+  <ul>
+      {% for p in param.get_param_values %}
+      <li>{{ p.0 }}: {{ p.1 }}</li>
+      {% endfor %}
+  </ul>
 {% endblock %}
