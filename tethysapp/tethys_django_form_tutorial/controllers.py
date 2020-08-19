@@ -187,8 +187,6 @@ def param_string(request):
     Controller for the app home page.
     """
 
-    data_string = ""
-
     from django import forms
     from django.forms.widgets import Textarea
 
@@ -202,7 +200,28 @@ def param_string(request):
 
     my_param = MyParamString()
 
-    context = get_context(request, my_param)
+    if request.method == 'POST':
+        form = ParamForm(request.POST, param=my_param, widget_map=widget_map)
+        if form.is_valid():
+            message = 'Form is valid!'
+            success = True
+            the_param = form.as_param()
+        else:
+            message = 'Form is not valid!'
+            success = False
+            the_param = my_param
+    else:
+        message = 'Please submit the form.'
+        success = None
+        the_param = my_param
+        form = ParamForm(param=my_param, widget_map=widget_map)
+
+    context = {
+        'form': form,
+        'message': message,
+        'success': success,
+        'param': the_param
+    }
 
     return render(request, 'tethys_django_form_tutorial/string.html', context)
 
